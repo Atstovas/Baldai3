@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+    <div class="container product">
+    <h4>{{product.decor}} {{product.texture}}</h4>
+    <hr/>
+    <p>{{ product.description }}</p>
+    </hr>
+    </br>
+  {% if product.gaminys.all %}
+    </br>
+    <h5>Mūsų klientai yra užsakę plokštes {{product.decor}} {{product.texture}} {{product.p_name}} {{product.nsc_color}} tokių matmenų:</h5>
+    {% for i in product.gaminys.all %}
+       <li>{{ i.product }} matmuo: {{ i.product_length }}mm x {{ i.product_width }}mm</li>
+    {% endfor %}
+    </div>
+  </ul>
+  {% else %}
+    <p>Gaminių iš šios plokštės dar negaminome.</p>
+  {% endif %}
+{% endblock %}
+

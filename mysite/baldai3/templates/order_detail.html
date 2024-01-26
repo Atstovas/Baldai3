@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+  <h1>{{ order.order_no }}</h1>
+
+
+  <p><strong>Užsakymo Numris:</strong> {{ order.order_no }}</p>
+  <p><strong>Data:</strong> {{ order.date }}</p>
+  <p><strong>Statusas:</strong> {{ order.status }}</p>
+
+  <div style="margin-left:20px;margin-top:20px">
+    <h4>Klientas: {{ order.client_name }}:</h4>
+
+
+    <hr>
+  </div>
+{% endblock %}
