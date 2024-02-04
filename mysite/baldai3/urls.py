@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 
 urlpatterns = [
     path("", views.index, name="index"),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('products', views.products, name="products"),#Baldinių plokščių sąrašas
     path('products/<int:product_id>', views.product, name='product'), #plokštė iš sąrašo su 100x100
     path('order_line/', views.OrderLineListView.as_view(), name='order_line'),#užsakymo eilutė
