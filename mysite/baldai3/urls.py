@@ -9,7 +9,7 @@ urlpatterns = [
     path('products/<int:product_id>', views.product, name='product'), #plokštė iš sąrašo su 100x100
     path('order_line/', views.OrderLineListView.as_view(), name='order_line'),#užsakymo eilutė
     path('order_line/<int:pk>', views.OrderDetailView.as_view(), name='order_detail'),
-
+    path('search/', views.search, name="search"),
 ]
 
 # urlpatterns = [

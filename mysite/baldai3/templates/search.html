@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block "title" %}Paiškos rezultatai{% endblock %}
+
+{% block "content" %}
+<h1>Paieškos pagal užklausą "{{ query }}" rezultatai:</h1>
+{% if orders_no_search %}
+{% for order_objektas in orders_no_search %}
+<p><a href="{% url 'product' order_objektas.pk %}">{{ order_objektas }}</a></p>
+<hr>
+{% endfor %}
+{% else %}
+<p>Deja nieko neradome :(</p>
+{% endif %}
+{% endblock %}
