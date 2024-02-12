@@ -1,29 +1,45 @@
 {% extends "base.html" %}
 
 {% block "content" %}
-  <h1>Produktai</h1>
-  <p>Mūsų tiekiamų baldinių plokščių sąrašas.</p>
-  {% for a in products %}
-    <li><a href="{% url 'product' a.id %}">{{a.decor}} {{a.texture}} {{a.p_name}} {{a.nsc_color}}</a></li>
+<h1>All Products</h1>
+<ul>
+    {% for product in products %}
+    <li>
+        {{ product.p_name }} - {{ product.description }}
+        {% if product.decor_pic %}
+        <img src="{{ product.decor_pic.url }}" alt="{{ product.p_name }} Image">
+        {% else %}
+        <p>No image available</p>
+        {% endif %}
+    </li>
     {% endfor %}
-
-
+</ul>
+<h1>Produktai</h1>
+<p>Mūsų tiekiamų baldinių plokščių sąrašas.</p>
+{% for product in products %}
+<li><a href="{% url 'product' product.id %}">{{product.decor}} {{product.texture}} {{product.p_name}} {{product.nsc_color}}</a></li>
+        {% if product.decor_pic %}
+        <img src="{{ product.decor_pic.url }}" alt="{{ product.p_name }} Image">
+        {% else %}
+        <p>No image available</p>
+        {% endif %}
+{% endfor %}
 <div class="container puslapiai">
     <nav aria-label="...">
         {% if products.has_other_pages %}
-            <ul class="pagination pagination-sm justify-content-end">
-                {% for i in products.paginator.page_range %}
-                    {% if products.number == i %}
-                        <li class="page-item active">
-                            <a class="page-link">{{ i }}</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-                        </li>
-                    {% endif %}
-                {% endfor %}
-            </ul>
+        <ul class="pagination pagination-sm justify-content-end">
+            {% for i in products.paginator.page_range %}
+            {% if products.number == i %}
+            <li class="page-item active">
+                <a class="page-link">{{ i }}</a>
+            </li>
+            {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
         {% endif %}
     </nav>
 </div>

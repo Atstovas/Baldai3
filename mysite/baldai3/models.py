@@ -139,6 +139,7 @@ class Product(models.Model):
     p_name = models.CharField(verbose_name="Plokštės pavadinimas", max_length=50)
     nsc_color = models.CharField(verbose_name="Plokštės spalvos kodas", max_length=50)
     description = models.TextField('Aprašymas', max_length=2000, default='')
+    decor_pic = models.ImageField('Dekoro nuotrauka', upload_to='decors', null=True, blank=True)
 
     def __str__(self):
         return f"{self.decor} {self.texture} {self.p_name} {self.nsc_color}"

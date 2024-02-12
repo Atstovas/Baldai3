@@ -52,7 +52,9 @@ class OrderDetailView(generic.DetailView):
 
 def search(request):
     query = request.GET.get('query')
-    orders_search_results = OrderLine.objects.filter(Q(product__decor__icontains=query))
+    orders_search_results = Product.objects.filter(Q(decor__icontains=query))
+
+
     context = {
         "query": query,
         "orders_no_search": orders_search_results,
