@@ -18,14 +18,19 @@
             <ul class="sidebar-nav">
                 <li>
                     <form action="{% url 'search' %}" method="get" class="form-inline my-2 my-md-0">
-                        <input name="query" class="form-control" type="text" placeholder="Paieška">
+                        <div class="input-group mb-3">
+                            <input name="query" class="form-control" type="text" placeholder="Paieška">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit">Ieškoti</button>
+                            </div>
+                        </div>
                     </form>
                 </li>
                 <li><a href="{% url 'index' %}">Pradžia</a></li>
                 <li><a href="{% url 'order_line' %}">Visi užsakymai</a></li>
                 <li><a href="{% url 'products' %}">Visi produktai</a></li>
                 {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="#">
+                <li class="nav-item"><a class="nav-link" href="url 'profile'">
                     <svg class="bi bi-person" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor"
                          xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd"
@@ -36,16 +41,34 @@
                 <li class="nav-item">
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
-                        <button class="nav-link active" type="submit">Atsijungti</button>
+                        <button type="submit" class="btn btn-primary nav-link active">Atsijungti</button>
                     </form>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_orders_list' %}">Mano užsakymai</a>
+                </li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login'%}">Prisijungti</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'login' %}">Prisijungti</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'register' %}">Registruotis</a>
+                </li>
                 {% endif %}
             </ul>
             {% endblock %}
         </div>
-        <div class="col-sm-10 ">{% block "content" %}{% endblock %}</div>
+        <div class="container">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% elif message.tags == 'info' %}success{% endif %}"
+                 role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% block "content" %}{% endblock %}
+        </div>
     </div>
 </div>
 </body>

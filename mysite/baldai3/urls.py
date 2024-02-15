@@ -10,6 +10,9 @@ urlpatterns = [
     path('order_line/', views.OrderLineListView.as_view(), name='order_line'),#užsakymo eilutė
     path('order_line/<int:pk>', views.OrderDetailView.as_view(), name='order_detail'),
     path('search/', views.search, name="search"),
+    path('personal_orders/', views.MyOrderListView.as_view(), name="my_orders_list"),
+    path('register/', views.register, name='register'),
+    path("profile/", views.profile, name="profile"),
 ]
 
 # urlpatterns = [

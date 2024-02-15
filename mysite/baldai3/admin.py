@@ -7,10 +7,9 @@ from django.utils.html import format_html
 class OrderLineInLine(admin.TabularInline):
     model = OrderLine
     extra = 0
-    fields = ['qty', 'product']
+    fields = [ 'product', 'product_thickness', 'qty', 'product_length', 'product_width', 'left_edge_info', 'right_edge_info', 'top_edge_info', 'bottom_edge_info',"mill_drawing_info", "sketch_custom", "sketch_drill_info"]
     # Home › Uzsakymai › Užsakymai ›
     # admin polapyje atvaizduojama: UŽSAKYMO EILUTĖS -> KIEKIS	PLOKŠTĖ
-
 
 class OrderAdmin(admin.ModelAdmin):
     # Home › Uzsakymai › Užsakymai
@@ -40,10 +39,39 @@ class OrderLineAdmin(admin.ModelAdmin):
                     'sketch_image_url',
                     'drill_image_url',
                     ]
+    fieldsets = [
+        (
+            'General',
+            {
+                "fields": ["order", "product", "product_thickness", "qty", "product_length", "product_width"],
+            },
+        ),
+        (
+            "Apskaičiuoti Matmenys",
+            {
+                "classes": ["collapse"],
+                "fields": ["display_total_length", "display_total_width"],
+            },
+        ),
+        (
+            "Apdirbimas (Brėžiniai)",
+            {
+                "classes": ["collapse"],
+                "fields": ["mill_drawing_info", "sketch_custom", "sketch_drill_info"],
+            },
+        ),
+        (
+            "Kraštinės",
+            {
+                "classes": ["collapse"],
+                "fields": ["left_edge_info", "right_edge_info", "top_edge_info", "bottom_edge_info"],
+            },
+        ),
+    ]
     list_filter = ('order', 'product')
     search_fields = ('product__decor','order__order_no')
 
-    # readonly_fields = ('display_total_length', 'display_total_width')
+    readonly_fields = ('display_total_length', 'display_total_width')
     def mill_sketch_image_url(self, obj):
         if obj.mill_drawing_info and obj.mill_drawing_info.sketch:
             url = obj.mill_drawing_info.sketch.url

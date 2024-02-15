@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User, AbstractUser
 from django.urls import reverse  # Papildome imports
 import uuid
-
+from PIL import Image
 from django.utils.html import format_html
 
 
@@ -300,3 +300,19 @@ class OrderLine(models.Model):
     class Meta:
         verbose_name = 'Užsakymo eilutė'
         verbose_name_plural = 'Užsakymo eilutės'
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(default="profile_pics/default.png", upload_to="profile_pics")
+
+    def __str__(self):
+        return f"{self.user.username} profilis"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        img = Image.open(self.photo.path)
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.photo.path)

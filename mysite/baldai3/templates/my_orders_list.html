@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+<h1>Mano užsakymai</h1>
+{% if my_orders %}
+<ul>
+    {% for order in my_orders %}
+    <li>
+        <a href="{{ order.pk }}">{{ order }}</a>
+    </li>
+    <li>
+        <a href="{% url 'order_detail' order.pk %}">{{ order }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Užsakymų nėra.</p>
+{% endif %}
+{% endblock %}
