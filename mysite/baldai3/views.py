@@ -57,6 +57,11 @@ class OrderDetailView(generic.DetailView):
     model = Order
     template_name = 'order_detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['status_display'] = self.object.get_status_display()
+        return context
+
 
 def search(request):
     query = request.GET.get('query')
