@@ -1,17 +1,28 @@
 {% extends "base.html" %}
 
 {% block "content" %}
-  <h1>{{ order.order_no }}</h1>
+<h1>{{ order.order_no }}</h1>
 
+<p><strong>Užsakymo Numeris:</strong> {{ order.order_no }}</p>
+<p><strong>Data:</strong> {{ order.date }}</p>
+<p><strong>Statusas:</strong> {{ status_display }}</p>
 
-  <p><strong>Užsakymo Numris:</strong> {{ order.order_no }}</p>
-  <p><strong>Data:</strong> {{ order.date }}</p>
-  <p><strong>Statusas:</strong> {{ status_display }}</p>
-
-  <div style="margin-left:20px;margin-top:20px">
+<div style="margin-left:20px;margin-top:20px">
     <h4>Klientas: {{ order.client_name }}:</h4>
-
-
     <hr>
-  </div>
+</div>
+
+<h1>Knygų sąrašas</h1>
+
+{% if order_lines %}
+{% for order_line in order_lines %}
+    <p>{{ order_line }}</p>
+{% endfor %}
+{% else %}
+<div class="alert alert-warning" role="alert">
+  Užsakymo eilučių (order_lines) nėra.
+</div>
+
+{% endif %}
+
 {% endblock %}

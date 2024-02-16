@@ -60,6 +60,7 @@ class OrderDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['status_display'] = self.object.get_status_display()
+        context['order_lines'] = OrderLine.objects.filter(order=self.object)
         return context
 
 
