@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Order, Product, OrderLine
+from .models import *
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -11,7 +11,8 @@ from django.contrib.auth.forms import User
 from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.contrib.auth import password_validation
-from .forms import UserUpdateForm, ProfileUpdateForm
+from .forms import UserUpdateForm, ProfileUpdateForm, DateTimeInput, OrderCommentForm
+from django import forms
 
 def index(request):
     # Suskaičiuokime keletą pagrindinių objektų
@@ -56,6 +57,7 @@ class OrderLineListView(generic.ListView):
 class OrderDetailView(generic.DetailView):
     model = Order
     template_name = 'order_detail.html'
+    form_class = OrderCommentForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -139,3 +141,38 @@ def profile(request):
             "p_form": p_form,
         }
         return render(request, template_name="profile.html", context=context)
+
+from django.contrib.auth.decorators import login_required
+from .models import Order
+
+@login_required
+def order_list(request):
+    orders = Order.objects.filter(client_name=request.user)
+    print(orders)
+    return render(request, 'order_list.html', {'orders': orders})
+
+
+class OrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['client_name', 'date', 'status']
+@login_required
+def order_create(request):
+    if request.method == "POST":
+        form = OrderCreateUpdateForm(request.POST)  # Use OrderCreateUpdateForm instead of OrderForm
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.client_name = request.user  # Set 'client_name' to the current user
+            order.save()
+            return redirect('order_list')
+    else:
+        form = OrderCreateUpdateForm()  # Use OrderCreateUpdateForm instead of OrderForm
+    return render(request, 'order_create.html', {'form': form})
+
+class OrderCreateUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['date', 'status']  # Removed 'client_name'
+        widgets = {
+            'date': DateTimeInput(),
+        }

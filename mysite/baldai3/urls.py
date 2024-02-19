@@ -13,6 +13,8 @@ urlpatterns = [
     path('personal_orders/', views.MyOrderListView.as_view(), name="my_orders_list"),
     path('register/', views.register, name='register'),
     path("profile/", views.profile, name="profile"),
+    path('orders/', views.order_list, name='order_list'),
+    path('order/create/', views.order_create, name='order_create'),
 ]
 
 # urlpatterns = [

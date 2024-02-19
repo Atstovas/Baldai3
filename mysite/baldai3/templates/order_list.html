@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block "title" %}Vartotojo užsakymai{% endblock %}
+
+{% block "content" %}
+
+<h2>Orders</h2>
+<form action="{% url 'order_create' %}" method="get">
+    <input type="submit" value="Add Order">
+</form>
+  <table>
+    <tr>
+      <th>ID:</th>
+      <th>Client_Name:</th>
+      <th>Order_No:</th>
+      <th>Status:</th>
+      <th>Date:</th>
+    </tr>
+    {% for order in orders %}
+      <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.client_name }}</td>
+        <td>{{ order.order_no }}</td>
+        <td>{{ order.status }}</td>
+        <td>{{ order.date }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No orders found.</td>
+      </tr>
+    {% endfor %}
+  </table>
+
+{% endblock %}

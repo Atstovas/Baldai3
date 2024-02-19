@@ -1,20 +1,28 @@
 from django.contrib import admin
 from .models import Order, Product, ProductThickness, BottomEdgeInfo, LeftEdgeInfo, RightEdgeInfo, \
-    TopEdgeInfo, OrderLine, EdgeThickness, MillDrawing, SketchCustom, SideDrill, DrillSketch
+    TopEdgeInfo, OrderLine, EdgeThickness, MillDrawing, SketchCustom, SideDrill, DrillSketch, OrderComment
 from django.utils.html import format_html
 
 
 class OrderLineInLine(admin.TabularInline):
     model = OrderLine
     extra = 0
-    fields = [ 'product', 'product_thickness', 'qty', 'product_length', 'product_width', 'left_edge_info', 'right_edge_info', 'top_edge_info', 'bottom_edge_info',"mill_drawing_info", "sketch_custom", "sketch_drill_info"]
+    fields = ['product', 'product_thickness', 'qty', 'product_length', 'product_width', 'left_edge_info',
+              'right_edge_info', 'top_edge_info', 'bottom_edge_info', "mill_drawing_info", "sketch_custom",
+              "sketch_drill_info"]
     # Home › Uzsakymai › Užsakymai ›
     # admin polapyje atvaizduojama: UŽSAKYMO EILUTĖS -> KIEKIS	PLOKŠTĖ
 
+
+class OrderCommentInline(admin.TabularInline):
+    model = OrderComment
+    extra = 0
+
+
 class OrderAdmin(admin.ModelAdmin):
     # Home › Uzsakymai › Užsakymai
-    list_display = ['id','order_no', 'client_name', 'status', 'date', ]
-    inlines = [OrderLineInLine]
+    list_display = ['id', 'order_no', 'client_name', 'status', 'date', ]
+    inlines = [OrderLineInLine, OrderCommentInline]
     list_filter = ('status',)
 
 
@@ -69,9 +77,10 @@ class OrderLineAdmin(admin.ModelAdmin):
         ),
     ]
     list_filter = ('order', 'product')
-    search_fields = ('product__decor','order__order_no')
+    search_fields = ('product__decor', 'order__order_no')
 
     readonly_fields = ('display_total_length', 'display_total_width')
+
     def mill_sketch_image_url(self, obj):
         if obj.mill_drawing_info and obj.mill_drawing_info.sketch:
             url = obj.mill_drawing_info.sketch.url
@@ -83,8 +92,6 @@ class OrderLineAdmin(admin.ModelAdmin):
         else:
             return "-"
 
-    mill_sketch_image_url.short_description = "FREZAVIMAS"
-
     def sketch_image_url(self, obj):
         if obj.sketch_custom and obj.sketch_custom.sketch:
             url = obj.sketch_custom.sketch.url
@@ -95,8 +102,6 @@ class OrderLineAdmin(admin.ModelAdmin):
                                "")
         else:
             return "-"
-
-    sketch_image_url.short_description = "ESKIZAS"
 
     def drill_image_url(self, obj):
         if obj.sketch_drill_info and obj.sketch_drill_info.sketch:

@@ -192,6 +192,8 @@ class Order(models.Model):
         verbose_name_plural = 'Užsakymai'
 
 
+
+
 class OrderLine(models.Model):
     order = models.ForeignKey(to="Order", verbose_name="Užsakymas", on_delete=models.CASCADE, related_name="lines")
     product = models.ForeignKey(to="Product", verbose_name="Plokštė", on_delete=models.SET_NULL, null=True, related_name="gaminys")
@@ -257,13 +259,20 @@ class OrderLine(models.Model):
         sum = self.product_width - top_thickness - bottom_thickness
         return sum
 
+
     def display_total_length(self):
-        return f"{self.total_length()}"
+        if self.product_length is not None and self.left_edge_info is not None and self.right_edge_info is not None:
+            return self.product_length - self.left_edge_info.e_thickness_model.e_thickness - self.right_edge_info.e_thickness_model.e_thickness
+        else:
+            return None
 
     display_total_length.short_description = "Cut Length"
 
     def display_total_width(self):
-        return f"{self.total_width()}"
+        if self.product_width is not None and self.top_edge_info is not None and self.bottom_edge_info is not None:
+            return self.product_width - self.top_edge_info.e_thickness_model.e_thickness - self.bottom_edge_info.e_thickness_model.e_thickness
+        else:
+            return None
 
     display_total_width.short_description = "Cut width"
 
@@ -316,3 +325,14 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.photo.path)
+
+class OrderComment(models.Model):
+    order = models.ForeignKey(to="Order", verbose_name="Užsakymas", on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(to=User, verbose_name="Autorius", on_delete=models.CASCADE)
+    date_created = models.DateTimeField(verbose_name="Data", auto_now_add=True)
+    content = models.TextField(verbose_name="Tekstas", max_length=1000)
+
+    class Meta:
+        verbose_name = 'Užsakymo komentaras'
+        verbose_name_plural = 'Užsakymų komentarai'
+        ordering = ['-date_created']

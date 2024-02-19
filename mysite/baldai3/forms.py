@@ -1,12 +1,12 @@
 from django import forms
-from .models import Profile, Order
+from .models import Profile, Order, OrderComment
 from django.contrib.auth.models import User
 
 
-# class OrderCommentForm(forms.ModelForm):
-#     class Meta:
-#         model = OrderComment
-#         fields = ['content']
+class OrderCommentForm(forms.ModelForm):
+    class Meta:
+        model = OrderComment
+        fields = ['content']
 
 
 class UserUpdateForm(forms.ModelForm):
