@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.http import HttpResponse
 from .models import *
 from django.views import generic
@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.contrib import messages
 from django.contrib.auth import password_validation
 from .forms import UserUpdateForm, ProfileUpdateForm, DateTimeInput, OrderCommentForm
+from django.views.generic.edit import FormMixin
 from django import forms
 
 def index(request):
@@ -54,9 +55,10 @@ class OrderLineListView(generic.ListView):
     paginate_by = 5
 
 
-class OrderDetailView(generic.DetailView):
+class OrderDetailView(FormMixin, generic.DetailView):
     model = Order
     template_name = 'order_detail.html'
+    #context_object_name = "order" - perdaryta į funkciją get_context_data
     form_class = OrderCommentForm
 
     def get_context_data(self, **kwargs):
@@ -64,6 +66,24 @@ class OrderDetailView(generic.DetailView):
         context['status_display'] = self.object.get_status_display()
         context['order_lines'] = OrderLine.objects.filter(order=self.object)
         return context
+
+    def get_success_url(self):
+        return reverse('order_detail', kwargs={'pk': self.object.id})
+
+    # standartinis post metodo perrašymas, naudojant FormMixin, galite kopijuoti tiesiai į savo projektą.
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.order = self.object
+        form.instance.author = self.request.user
+        form.save()
+        return super().form_valid(form)
 
 
 def search(request):
