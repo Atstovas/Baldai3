@@ -31,6 +31,13 @@
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
   
-  <p><a href="{% url 'password_reset' %}">Pamiršote slaptažodį?</a></p>
-  
+<p><a href="{% url 'password_reset' %}">Pamiršote slaptažodį?</a></p>
+<p>Arba prisijunkite su github:</p>
+
+{% load socialaccount %}
+<form action="{% provider_login_url 'github' %}" method="post">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary" >Prisijungti su Github</button>
+</form>
+
 {% endblock %}

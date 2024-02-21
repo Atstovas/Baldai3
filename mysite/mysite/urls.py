@@ -26,6 +26,16 @@ urlpatterns = [
                   path('', RedirectView.as_view(url='baldai3/', permanent=True)),
                   path('accounts/', include('django.contrib.auth.urls')),
                   path('tinymce/', include('tinymce.urls')),
+                  # OAuth
+                  #path('admin/', admin.site.urls),
+                  #path('accounts/', include('allauth.urls')),
+                  #path('register/', register, name='register'),
+                  #path('login/', login, name='login'),
+                  #path('', home, name='home'),
+                  #path('home/', home, name='home'),
+                  #path('contact/', contact, name='contact'),
+                  #path('dashboard/', dashboard, name='dashboard'),
+                  #path('accounts/change-username/', ChangeUsername.as_view(), name='account_change_username'),
               ] + (static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) +
                    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
 
