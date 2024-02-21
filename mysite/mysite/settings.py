@@ -35,14 +35,15 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'baldai3',
     'tinymce',
+    'crispy_forms',
+    'crispy_bootstrap4',
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.staticfiles',
-    # The following apps are required:
+    # django-allauth The following apps are required:
     'django.contrib.auth',
     'django.contrib.messages',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -188,3 +189,6 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
     }
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap4' #automatiškai priskiria šabloną, kuris skirtas bootstrap4
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
