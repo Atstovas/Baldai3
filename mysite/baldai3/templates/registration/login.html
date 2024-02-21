@@ -7,13 +7,13 @@
   {% if form.errors %}
     <p>Prisijungimo klaida, bandykite dar kartą!</p>
   {% endif %}
-  
+
   {% if next %}
     {% if user.is_authenticated %}
       <p>Neturite prieigos prie šios informacijos. Turite prisijungti.</p>
     {% endif %}
   {% endif %}
-  
+
   <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
@@ -30,7 +30,7 @@
     <input class="btn btn-primary" type="submit"  value="Prisijungti" />
     <input type="hidden" name="next" value="{{ next }}" />
   </form>
-  
+
 <p><a href="{% url 'password_reset' %}">Pamiršote slaptažodį?</a></p>
 <p>Arba prisijunkite su github:</p>
 
@@ -39,5 +39,10 @@
   {% csrf_token %}
   <button type="submit" class="btn btn-primary" >Prisijungti su Github</button>
 </form>
-
+<br>
+<p>Arba prisijunkite su Google:</p>
+<form action="{% provider_login_url 'google' %}" method="post">
+  {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Prisijungti su Google</button>
+</form>
 {% endblock %}

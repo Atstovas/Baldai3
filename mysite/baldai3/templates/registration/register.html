@@ -40,5 +40,10 @@
   {% csrf_token %}
   <button type="submit" class="btn btn-primary" >Registruotis su Github</button>
 </form>
+<p>Arba registruokitės su Google:</p>
+<form action="{% provider_login_url 'google' %}" method="post">
+  {% csrf_token %}
+    <button type="submit" class="btn btn-primary" >Registruotis su Google</button>
+</form>
 
 {% endblock %}

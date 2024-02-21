@@ -28,7 +28,7 @@ urlpatterns = [
                   path('tinymce/', include('tinymce.urls')),
                   # OAuth
                   #path('admin/', admin.site.urls),
-                  #path('accounts/', include('allauth.urls')),
+                  path('accounts/', include('allauth.urls')),
                   #path('register/', register, name='register'),
                   #path('login/', login, name='login'),
                   #path('', home, name='home'),

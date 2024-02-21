@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import Order, Product, ProductThickness, BottomEdgeInfo, LeftEdgeInfo, RightEdgeInfo, \
-    TopEdgeInfo, OrderLine, EdgeThickness, MillDrawing, SketchCustom, SideDrill, DrillSketch, OrderComment
+    TopEdgeInfo, OrderLine, EdgeThickness, MillDrawing, SketchCustom, SideDrill, DrillSketch, OrderComment, Profile
 from django.utils.html import format_html
 
 
@@ -130,3 +130,4 @@ admin.site.register(MillDrawing)
 admin.site.register(SketchCustom)
 admin.site.register(SideDrill)
 admin.site.register(DrillSketch)
+admin.site.register(Profile)
